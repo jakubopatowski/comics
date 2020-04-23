@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Common build directories
+build*
+.ccls-cache*
