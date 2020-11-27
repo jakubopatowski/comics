@@ -33,6 +33,6 @@
 
 # Common build directories
 build*
-.ccls-cache*
+.ccls*
 .clang-format
 compile_commands.json
