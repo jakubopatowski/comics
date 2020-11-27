@@ -1,14 +1,27 @@
-
 #include <iostream>
-#include <locale.h>
+#include <memory>
+#include <string>
 using namespace std;
 
+#include "event.hpp"
+#include "foo.hpp"
+
 int main() {
-    // ================
-    setlocale(LC_CTYPE, "Polish");
-    // ================
+    std::unique_ptr< FooFoo > foo( new FooFoo( 1 ) );
+    cout << foo->getNo() << '\n';
+    foo = std::make_unique< FooFoo >( 2 );
+    cout << ( *foo ).getNo() << '\n';
+    // cout << *foo.getNo() << '\n'; // error, cheeck operator precedence
 
-    cout << "Witaj świecie!\n";
+    if ( foo ) {
+        cout << "Foo object exists, it holds no. " << ( *foo ).getNo() << '\n';
+    }
+    foo.reset();
+    
+    if ( !foo ) {
+        cout << "There is no Foo object." << '\n';
+    }
 
+    cout << "Main function ends here." << '\n';
     return 0;
 }

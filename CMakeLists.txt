@@ -4,6 +4,10 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
   cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 project(cpp_starting_project)
 
 if(MSVC)
@@ -35,21 +39,24 @@ endif()
 
 find_package(Boost 1.74.0 REQUIRED COMPONENTS date_time regex)
 
-message("==============================================================")
+message("===============================================================")
 message("                        ..:: BOOST ::..                       ")
-message("==============================================================")
+message("===============================================================")
 message("Boost_FOUND:                ${Boost_FOUND}")
 message("Boost_VERSION:              ${Boost_VERSION}")
 message("BOOST_ROOT:                 ${BOOST_ROOT}")
 message("Boost_INCLUDE_DIRS:         ${Boost_INCLUDE_DIRS}")
 message("Boost_LIBRARY_DIRS:         ${Boost_LIBRARY_DIRS}")
 message("Boost_LIBRARIES:            ${Boost_LIBRARIES}")
-message("==============================================================")
+message("===============================================================")
 
 set(project_sources
-  main.cpp)
+  main.cpp
+  foo.hpp
+  event.hpp)
 
-add_executable(executable ${project_sources})
+add_executable(executable
+  ${project_sources})
 
 target_link_libraries(executable
   PRIVATE
