@@ -1,67 +1,42 @@
-cmake_minimum_required(VERSION 3.1...3.15)
+cmake_minimum_required(VERSION 3.14)
 
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-  cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+project(projekt)
+
+add_executable(main main.cpp)
+
+# Check what is the compiler
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # using regular Clang or AppleClang
+  if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+    # using clang with clang-cl front end
+  elseif (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+    # using clang with regular front end
+  endif()
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  # using Intel C++
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C++
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-project(cpp_starting_project)
+# Tests
 
-if(MSVC)
-  add_compile_options( /W4 )
-else()
-  add_compile_options( -Wall -Wextra -Wpedantic)
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v2.13.1)
+
+FetchContent_GetProperties(Catch2)
+if(NOT Catch2_POPULATED)
+  FetchContent_Populate(Catch2)
+  message(STATUS "Catch source dir: ${catch2_SOURCE_DIR}")
+  message(STATUS "Catch binary dir: ${catch2_BINARY_DIR}")
+  add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
 endif()
 
-#=====================
-#..:: BOOST SETUP ::..
-#=====================
-
-# set boost includes
-set(Boost_USE_STATIC_LIBS      OFF)  # only find static libs
-set(Boost_USE_DEBUG_LIBS       ON)   # ignore debug libs and
-set(Boost_USE_RELEASE_LIBS     OFF)  # only find release libs
-set(Boost_USE_MULTITHREADED    ON)
-set(Boost_USE_STATIC_RUNTIME   OFF)
-
-if(UNIX)
-  message("UNIX environment in use.")
-  set(BOOST_LIBRARYDIR         "/usr/lib64")
-elseif(MSVC OR WIN32)
-  message("MSVC or WIN32 environment in use.")
-  set(BOOST_ROOT               "D:/boost/boost_1_74_0_source")
-else()
-  message("Unknown environment in use.")
-endif()
-
-find_package(Boost 1.74.0 REQUIRED COMPONENTS date_time regex)
-
-message("===============================================================")
-message("                        ..:: BOOST ::..                       ")
-message("===============================================================")
-message("Boost_FOUND:                ${Boost_FOUND}")
-message("Boost_VERSION:              ${Boost_VERSION}")
-message("BOOST_ROOT:                 ${BOOST_ROOT}")
-message("Boost_INCLUDE_DIRS:         ${Boost_INCLUDE_DIRS}")
-message("Boost_LIBRARY_DIRS:         ${Boost_LIBRARY_DIRS}")
-message("Boost_LIBRARIES:            ${Boost_LIBRARIES}")
-message("===============================================================")
-
-set(project_sources
-  main.cpp
-  foo.hpp
-  event.hpp)
-
-add_executable(executable
-  ${project_sources})
-
-target_link_libraries(executable
-  PRIVATE
-  ${Boost_LIBRARIES})
-
-target_include_directories(executable
-  PRIVATE
-  ${Boost_INCLUDE_DIRS})
+add_executable(tests test.cpp)
+target_link_libraries(tests Catch2::Catch2)
