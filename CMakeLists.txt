@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project(projekt)
 
-add_executable(main main.cpp)
+add_executable(main 
+  src/main.cpp
+  src/issueModel.cpp
+  src/DbConnection.cpp
+  src/DataControler.cpp)
 
 # Check what is the compiler
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -26,6 +30,24 @@ endif()
 get_target_property(MAIN_CFLAGS main COMPILE_OPTIONS)
 # also see: COMPILE_DEFINITIONS INCLUDE_DIRECTORIES
 message("-- Target compiler flags are: ${MAIN_CFLAGS}")
+
+# ================ qt6 part
+#set(CMAKE_PREFIX_PATH "D:\\Qt6\\6.0.2\\msvc2019_64")
+set(CMAKE_PREFIX_PATH "d:\\Qt\\5.15.1\\msvc2019_64")
+#For find_package to be successful, CMake must find the Qt installation.
+#There are different ways you can tell CMake about Qt:
+#    Set the CMAKE_PREFIX_PATH environment variable to include the Qt 6 installation prefix.
+#    Set the CMake cache variable CMAKE_PREFIX_PATH to include the Qt 6 installation prefix.
+find_package(Qt5 5.15.1 COMPONENTS Widgets Core Gui Sql REQUIRED)
+
+if(Qt5_FOUND)
+  message("-- Package Qt found.")
+  target_link_libraries(main PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::Sql)
+else()
+  message("-- Package Qt Not found.")
+endif()
+
+#=============== end of qt6 part
 
 # Fetch Libraries
 include(FetchContent)
@@ -96,5 +118,5 @@ FetchContent_MakeAvailable(Catch2)
 #   add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
 # endif()
 
-add_executable(tests test.cpp)
+add_executable(tests test/test.cpp)
 target_link_libraries(tests Catch2::Catch2)

@@ -33,6 +33,7 @@
 
 # Common build directories
 build*
+.vscode*
 .ccls*
 .clang-format
 compile_commands.json
