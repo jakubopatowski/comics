@@ -1,12 +1,27 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.21)
 
-project(projekt)
+project(projekt VERSION 0.0.1 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 add_executable(main 
   src/main.cpp
   src/issueModel.cpp
   src/DbConnection.cpp
-  src/DataControler.cpp)
+  src/DataControler.cpp
+  src/mymodel.cpp)
+
+install(CODE "MESSAGE(\"Sample install message.\")")
+install(CODE [[
+  file(GET_RUNTIME_DEPENDENCIES
+    # ...
+    )
+  ]])
 
 # Check what is the compiler
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")

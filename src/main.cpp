@@ -4,8 +4,17 @@
 #include <memory>
 #include "issueModel.hpp"
 
-int main(int argc, char *argv[]) {
-    IssueModel issues;
+// main.cpp
+#include <QApplication>
+#include <QTableView>
+#include "mymodel.hpp"
 
-    return 0;
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    QTableView tableView;
+    MyModel myModel;
+    tableView.setModel(&myModel);
+    tableView.show();
+    return a.exec();
 }

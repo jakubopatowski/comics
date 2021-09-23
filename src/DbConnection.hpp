@@ -4,11 +4,12 @@
 
 class DbConnection
 {
-public:
-    DbConnection() : db(nullptr), m_driver(QString("QSQLITE") /*hardcode!!*/), m_name(QString("database.sqlite")){};
+  public:
+    DbConnection( const QString& driver = QString( "QSQLITE" ), const QString& name = QString( "database.sqlite" ) )
+        : db( nullptr ), m_driver( driver ), m_name( name ){};
 
-private:
-    QSqlDatabase *db;
+  private:
+    QSqlDatabase* db;
     const QString m_driver;
     const QString m_name;
 };
