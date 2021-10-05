@@ -1,10 +1,5 @@
 #include "sqlite3.h"
-#include <iostream>
-#include <vector>
-#include <memory>
-#include "issueModel.hpp"
 
-// main.cpp
 #include <QApplication>
 #include <QTableView>
 #include "mymodel.hpp"
