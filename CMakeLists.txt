@@ -45,5 +45,5 @@ FetchContent_MakeAvailable(glad)
 
 
 enable_testing()
-add_subdirectory(src)
+add_subdirectory(app)
 add_subdirectory(tests)

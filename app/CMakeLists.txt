@@ -65,7 +65,7 @@ target_link_directories(comics_app
 #    FILES ${PUBLIC_HEADER_LIST})
 
 source_group(
-    TREE "${PROJECT_SOURCE_DIR}/src"
+    TREE "${PROJECT_SOURCE_DIR}/app"
     PREFIX "Private Header Files"
     FILES ${HEADER_LIST})
 

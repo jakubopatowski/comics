@@ -10,18 +10,38 @@ FetchContent_MakeAvailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
+# Sources to test
+set(SRC_FILES
+"${comics_SOURCE_DIR}/app/issueModel.cpp"
+)
+
+set(HPP_FILES
+"${comics_SOURCE_DIR}/app/issueModel.hpp"
+)
+
 # Tests need to be added as executables first
-add_executable(tests test.cpp)
+add_executable(tests 
+  ${SRC_FILES}
+  ${HPP_FILES}
+  testIssueInfo.cpp)
 
 # I'm using C++17 in the test
 target_compile_features(tests
   PRIVATE 
     cxx_std_17)
 
+target_include_directories(tests
+  PRIVATE
+    "${comics_SOURCE_DIR}/app") 
+
 # Should be linked to the main library, as well as the Catch2 testing library
 target_link_libraries(tests
   PRIVATE   
-    Catch2::Catch2)
+    Catch2::Catch2
+    Qt5::Widgets 
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Sql)
     
 include(CTest)
 include(Catch)
